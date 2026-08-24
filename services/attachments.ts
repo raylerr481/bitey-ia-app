@@ -1,0 +1,3 @@
+export type BiteyAttachment={uri:string;name:string;mimeType?:string;size?:number};
+export function normalizeAttachment(input:{uri:string;name?:string;mimeType?:string;size?:number}):BiteyAttachment{return {uri:input.uri,name:input.name||'archivo',mimeType:input.mimeType,size:input.size};}
+export function isSupportedAttachment(a:BiteyAttachment){const t=(a.mimeType||'').toLowerCase();return t.startsWith('image/')||t==='application/pdf'||t.includes('text')||t.includes('spreadsheet')||t.includes('csv')||t.includes('wordprocessing');}
