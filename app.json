@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Bitey IA",
+    "slug": "bitey-ia",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "biteyia",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "com.raylerr481.biteyia"
+    },
+    "plugins": ["expo-router"]
+  }
+}
