@@ -1,0 +1,7 @@
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {View,Text,Pressable,FlatList,StyleSheet} from 'react-native';
+import {useRouter} from 'expo-router';
+const blue='#0b6f8a';
+const rows=['Nueva conversación','Diagnóstico de empresa','Ideas para automatizar','Investigación web'];
+export default function Conversations(){const r=useRouter();return <SafeAreaView style={s.safe}><View style={s.page}><Pressable onPress={()=>r.back()}><Text style={s.back}>‹ Volver</Text></Pressable><Text style={s.h1}>Conversaciones</Text><FlatList data={rows} keyExtractor={x=>x} contentContainerStyle={{gap:8,paddingTop:14}} renderItem={({item,i})=><Pressable style={s.row} onPress={()=>i===0&&r.push('/')}><Text style={s.icon}>{i===0?'＋':'◌'}</Text><View style={{flex:1}}><Text style={s.title}>{item}</Text><Text style={s.meta}>{i===0?'Comenzar ahora':'Conversación guardada'}</Text></View><Text style={s.arrow}>›</Text></Pressable>}/></View></SafeAreaView>}
+const s=StyleSheet.create({safe:{flex:1,backgroundColor:'#f7fafb'},page:{flex:1,padding:20},back:{color:blue,fontWeight:'700',marginBottom:18},h1:{fontSize:30,fontWeight:'800',color:'#17384f'},row:{minHeight:60,backgroundColor:'#fff',borderWidth:1,borderColor:'#dce9ed',borderRadius:14,paddingHorizontal:14,flexDirection:'row',alignItems:'center',gap:12},icon:{fontSize:20,color:blue,width:26,textAlign:'center'},title:{fontSize:14,fontWeight:'750',color:'#18344d'},meta:{fontSize:10,color:'#82929b',marginTop:3},arrow:{fontSize:23,color:blue}});
