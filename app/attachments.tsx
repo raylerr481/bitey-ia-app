@@ -1,0 +1,7 @@
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {View,Text,Pressable,StyleSheet} from 'react-native';
+import {useRouter} from 'expo-router';
+const blue='#0b6f8a';
+const options=[['📄','Archivo','PDF, Word, texto y otros'],['🖼️','Imagen','Fotos y capturas'],['📊','Datos','CSV, Excel y datos'],['📚','Biblioteca','Usar un archivo guardado']];
+export default function Attachments(){const r=useRouter();return <SafeAreaView style={s.safe}><View style={s.page}><Pressable onPress={()=>r.back()}><Text style={s.back}>‹ Volver</Text></Pressable><Text style={s.h1}>Añadir</Text><Text style={s.sub}>Agrega contenido para que Bitey lo use en la conversación.</Text>{options.map(x=><Pressable key={x[1]} style={s.row} onPress={()=>r.back()}><Text style={s.icon}>{x[0]}</Text><View style={{flex:1}}><Text style={s.title}>{x[1]}</Text><Text style={s.desc}>{x[2]}</Text></View><Text style={s.arrow}>›</Text></Pressable>)}</View></SafeAreaView>}
+const s=StyleSheet.create({safe:{flex:1,backgroundColor:'#f7fafb'},page:{flex:1,padding:20,gap:9},back:{color:blue,fontWeight:'700',marginBottom:12},h1:{fontSize:30,fontWeight:'800',color:'#17384f'},sub:{color:'#71818d',marginBottom:10},row:{minHeight:66,backgroundColor:'#fff',borderWidth:1,borderColor:'#dce9ed',borderRadius:14,padding:14,flexDirection:'row',alignItems:'center',gap:13},icon:{fontSize:23,width:30,textAlign:'center'},title:{fontSize:14,fontWeight:'800',color:'#18344d'},desc:{fontSize:11,color:'#71818d',marginTop:4},arrow:{fontSize:24,color:blue}});
