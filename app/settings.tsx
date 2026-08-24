@@ -1,0 +1,6 @@
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {View,Text,Pressable,StyleSheet} from 'react-native';
+import {useRouter} from 'expo-router';
+const blue='#0b6f8a';
+export default function Settings(){const r=useRouter();return <SafeAreaView style={s.safe}><View style={s.page}><Pressable onPress={()=>r.back()}><Text style={s.back}>‹ Volver</Text></Pressable><Text style={s.h1}>Configuración</Text><Text style={s.sub}>Personaliza tu experiencia con Bitey IA.</Text>{['Cuenta','Memoria y contexto','Notificaciones','Privacidad y datos','Idioma','Acerca de Bitey IA'].map((x,i)=><Pressable key={x} style={s.row}><Text style={s.icon}>{['👤','🧠','🔔','🔒','文','✦'][i]}</Text><Text style={s.title}>{x}</Text><Text style={s.arrow}>›</Text></Pressable>)}</View></SafeAreaView>}
+const s=StyleSheet.create({safe:{flex:1,backgroundColor:'#f7fafb'},page:{flex:1,padding:20,gap:9},back:{color:blue,fontWeight:'700',marginBottom:12},h1:{fontSize:30,fontWeight:'800',color:'#17384f'},sub:{color:'#71818d',marginBottom:10},row:{minHeight:50,backgroundColor:'#fff',borderWidth:1,borderColor:'#dce9ed',borderRadius:13,paddingHorizontal:14,flexDirection:'row',alignItems:'center',gap:12},icon:{fontSize:18,width:27,textAlign:'center'},title:{fontSize:13,fontWeight:'700',color:'#18344d',flex:1},arrow:{fontSize:22,color:blue}});
