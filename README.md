@@ -2,9 +2,13 @@
 
 `bitey-ia-app` is the **Android/mobile application for the general Bitey IA product**.
 
-Its intelligence is provided by **Bitey Web**, the Bitey IA supracerebro running on Cloudflare. The app is a client/channel of that product, not an independent AI brain and not a BiteFixes application.
+## Objective
 
-## Product boundary
+Bring the same authenticated Bitey IA experience from the web to Android, with secure user identity, conversations, history and mobile capabilities while keeping authoritative intelligence server-side.
+
+**Bitey Web is the Bitey IA supracerebro. Bitey IA App is its mobile client.**
+
+## Architecture
 
 ```text
                  BITEY IA
@@ -12,61 +16,71 @@ Its intelligence is provided by **Bitey Web**, the Bitey IA supracerebro running
                      │
           ┌──────────┴──────────┐
           │                     │
-     Bitey Web              Bitey IA App
-   Supracerebro             Android client
-   Cloudflare                    │
+      Bitey Web            Bitey IA App
+     Cloudflare             Android client
+     supracerebro                │
+          │                      │
           └──────────┬───────────┘
                      │
-             shared Bitey IA
-                experience
+                Supabase Auth
+                     │
+              user-scoped data
+                     │
+             Bitey IA contracts
 ```
 
-**Bitey Web is the supracerebro. Bitey IA App is its mobile client.**
+## Core functionalities
 
-The app must not treat `bitefixes-backend` as its primary intelligence layer.
+- Android-native presentation and responsive Bitey IA UX.
+- User registration, login, logout and session persistence.
+- Secure authentication/session transport using the shared Bitey IA identity model.
+- New conversations, message composition and conversation history.
+- User profile and settings.
+- Projects and library interfaces as supported by the web product.
+- Files, images, microphone/voice and other supported mobile capabilities.
+- Reliable communication with authorized Bitey Web/Cloudflare APIs.
+- Mobile notifications and platform integrations where implemented.
+- Release builds through the repository's Expo/Android CI pipeline.
 
-## Responsibilities
+## Data and security boundary
 
-The app is responsible for:
+The app is a client, not an AI brain. It must never contain provider API keys, private provider credentials or authoritative memory.
 
-- Android/mobile presentation and UX.
-- Authentication and secure session transport.
-- Conversation interface and history UX.
-- New conversations and message composition.
-- Projects, library, profile and settings interfaces.
-- Files, images, voice and other supported mobile capabilities.
-- Reliable communication with authorized Bitey Web APIs/contracts.
-- Mobile-specific notifications and platform integrations.
+```text
+Android client
+      ↓
+Supabase Auth identity
+      ↓
+authorized Bitey IA API
+      ↓
+Bitey Web / Cloudflare
+      ↓
+user-scoped persistence and AI services
+```
 
-The app must NOT contain:
-
-- AI provider API keys;
-- a duplicate authoritative reasoning engine;
-- BiteFixes company memory as general Bitey memory;
-- cross-tenant private data;
-- provider credentials embedded in the application bundle.
+Authorization is enforced server-side. Client-side identity information is not sufficient to authorize access to another user's data.
 
 ## Relationship to BiteFixes
 
-BiteFixes is a separate product ecosystem.
+BiteFixes is a separate product ecosystem. Bitey IA may integrate with BiteFixes through explicit authorized enterprise contracts, but BiteFixes-specific customers, tickets, services, company knowledge and workflows do not become general Bitey IA memory.
+
+## Ecosystem
 
 | Repository | Product | Role |
 |---|---|---|
-| `bitey-web` | **Bitey IA Web** | Bitey IA supracerebro and primary Cloudflare web application |
-| `bitey-ia-app` | **Bitey IA App** | This Android/mobile client of Bitey IA |
-| `bitey-ai` | **Bitey IA Enterprise WordPress Plugin** | Enterprise WordPress channel |
-| `bitefixes-backend` | **BiteFixes Backend** | Specialized BiteFixes enterprise backend/intelligence |
+| `bitey-web` | **Bitey IA Web** | General Bitey IA web application and Cloudflare supracerebro |
+| `bitey-ia-app` | **Bitey IA App** | This Android/mobile client |
+| `bitey-ai` | **Bitey IA Enterprise WordPress Plugin** | Authorized WordPress enterprise channel |
+| `bitefixes-backend` | **BiteFixes Backend** | Specialized BiteFixes enterprise intelligence/API |
+| `bitefixes-web` | **BiteFixes Web** | BiteFixes.com website/frontend |
 | `bitefixes-app` | **BiteFixes App** | BiteFixes mobile channel |
-| `bitefixes-web` | **BiteFixes Web** | BiteFixes website/frontend |
-
-Bitey IA may receive authorized enterprise context through explicit contracts, but this does not turn BiteFixes Backend into the general Bitey IA brain.
 
 ## Functional target
 
-The Android app should provide a coherent flow:
-
 ```text
 Open app
+  ↓
+Authenticate / restore session
   ↓
 Bitey IA
   ↓
@@ -78,27 +92,24 @@ Bitey Web / supracerebro
   ↓
 Bitey response
   ↓
-Conversation persistence
+User-scoped persistence
   ↓
 History / Projects / Library
 ```
 
-## Security
+## Internal training
 
-1. Keep provider credentials server-side.
-2. Authenticate users and enforce authorization server-side.
-3. Treat client input as untrusted.
-4. Use secure transport and platform secret storage.
-5. Never embed private BiteFixes data in the general app bundle.
-6. Keep authoritative intelligence and memory outside the client.
+Any Bitey training/evaluation infrastructure is an internal service and should not be exposed as a public app destination. External model interaction must comply with the provider's API, license and usage terms.
 
-## Development
+## Development and release validation
 
-The implementation should remain compatible with the repository's current mobile stack. Before release, validate:
+The mobile stack remains based on Expo/React Native. Before release validate:
 
 ```text
-Android build → install → authentication → message → Bitey Web → response → persistence
+Android build → install → authentication → message → Bitey Web → response → persistence → logout/login
 ```
+
+The app must not regress the existing AI conversation path while authentication and user-scoped persistence are introduced.
 
 ## Product principle
 
