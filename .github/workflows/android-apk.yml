@@ -14,9 +14,9 @@ env:
 
 jobs:
   build-apk:
-    name: Build Bitey IA APK
+    name: Build Bitey IA APK on EAS
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -24,44 +24,20 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
+          cache: npm
+
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci
 
-      - name: Expo diagnostics
-        run: npx expo-doctor
-        continue-on-error: true
+      - name: Initialize/link EAS project
+        run: eas init --force --non-interactive
 
-      - name: Generate Android project
-        run: npx expo prebuild --platform android --non-interactive --clean
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '17'
-          cache: gradle
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Assemble release APK
-        working-directory: android
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon --stacktrace
-
-      - name: Verify APK
-        run: |
-          APK=$(find android/app/build/outputs/apk/release -type f -name '*.apk' -print -quit)
-          test -n "$APK"
-          ls -lh "$APK"
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: bitey-ia-android-apk
-          path: android/app/build/outputs/apk/release/*.apk
-          if-no-files-found: error
-          retention-days: 14
+      - name: Build APK on EAS
+        run: eas build --platform android --profile production-apk --non-interactive --wait
