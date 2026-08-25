@@ -27,6 +27,10 @@ Bring the same authenticated Bitey IA experience from the web to Android, with s
               user-scoped data
                      │
              Bitey IA contracts
+
+        Internal capability: Bitey Trainer
+                     │
+                     └── subordinate to Bitey Web
 ```
 
 ## Core functionalities
@@ -60,6 +64,12 @@ user-scoped persistence and AI services
 
 Authorization is enforced server-side. Client-side identity information is not sufficient to authorize access to another user's data.
 
+## Bitey Trainer relationship
+
+`bitey-trainer` is an **internal capability of Bitey IA Web**, not a mobile feature and not a public destination in this app.
+
+Trainer is used for authorized AI evaluation/training opportunities, benchmarking and commercial programs with external AI providers. The Android app must not expose Trainer navigation, Trainer credentials or provider secrets.
+
 ## Relationship to BiteFixes
 
 BiteFixes is a separate product ecosystem. Bitey IA may integrate with BiteFixes through explicit authorized enterprise contracts, but BiteFixes-specific customers, tickets, services, company knowledge and workflows do not become general Bitey IA memory.
@@ -71,6 +81,7 @@ BiteFixes is a separate product ecosystem. Bitey IA may integrate with BiteFixes
 | `bitey-web` | **Bitey IA Web** | General Bitey IA web application and Cloudflare supracerebro |
 | `bitey-ia-app` | **Bitey IA App** | This Android/mobile client |
 | `bitey-ai` | **Bitey IA Enterprise WordPress Plugin** | Authorized WordPress enterprise channel |
+| `bitey-trainer` | **Bitey Trainer** | Private internal training/evaluation capability subordinate to Bitey IA Web |
 | `bitefixes-backend` | **BiteFixes Backend** | Specialized BiteFixes enterprise intelligence/API |
 | `bitefixes-web` | **BiteFixes Web** | BiteFixes.com website/frontend |
 | `bitefixes-app` | **BiteFixes App** | BiteFixes mobile channel |
@@ -97,10 +108,6 @@ User-scoped persistence
 History / Projects / Library
 ```
 
-## Internal training
-
-Any Bitey training/evaluation infrastructure is an internal service and should not be exposed as a public app destination. External model interaction must comply with the provider's API, license and usage terms.
-
 ## Development and release validation
 
 The mobile stack remains based on Expo/React Native. Before release validate:
@@ -113,4 +120,4 @@ The app must not regress the existing AI conversation path while authentication 
 
 ## Product principle
 
-**Bitey Web is Bitey IA's supracerebro. Bitey IA App is the Android client. BiteFixes App and BiteFixes Backend belong to a separate enterprise ecosystem.**
+**Bitey Web is Bitey IA's supracerebro. Bitey IA App is the Android client. Bitey Trainer is an internal subordinate capability. BiteFixes App and BiteFixes Backend belong to a separate enterprise ecosystem.**
