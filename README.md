@@ -1,123 +1,80 @@
 # Bitey IA App
 
-`bitey-ia-app` is the **Android/mobile application for the general Bitey IA product**.
+`bitey-ia-app` is the Android/mobile application for the general Bitey IA product.
 
-## Objective
+## Current status
 
-Bring the same authenticated Bitey IA experience from the web to Android, with secure user identity, conversations, history and mobile capabilities while keeping authoritative intelligence server-side.
+- Android app: active development and release-build validation.
+- Bitey Web: existing web application and Bitey IA supracerebro.
+- This repository is the mobile client; authoritative intelligence remains server-side.
+- Production Android builds use Expo/EAS and GitHub Actions.
 
-**Bitey Web is the Bitey IA supracerebro. Bitey IA App is its mobile client.**
+## Product objective
+
+Bring the authenticated Bitey IA experience to Android with secure identity, conversations, history and supported mobile capabilities while protecting provider credentials and user-scoped data.
+
+**Bitey Web is the Bitey IA supracerebro. Bitey IA App is its Android client.**
 
 ## Architecture
 
 ```text
-                 BITEY IA
-             General AI product
-                     │
-          ┌──────────┴──────────┐
-          │                     │
-      Bitey Web            Bitey IA App
-     Cloudflare             Android client
-     supracerebro                │
-          │                      │
-          └──────────┬───────────┘
-                     │
-                Supabase Auth
-                     │
-              user-scoped data
-                     │
-             Bitey IA contracts
-
-        Internal capability: Bitey Trainer
-                     │
-                     └── subordinate to Bitey Web
-```
-
-## Core functionalities
-
-- Android-native presentation and responsive Bitey IA UX.
-- User registration, login, logout and session persistence.
-- Secure authentication/session transport using the shared Bitey IA identity model.
-- New conversations, message composition and conversation history.
-- User profile and settings.
-- Projects and library interfaces as supported by the web product.
-- Files, images, microphone/voice and other supported mobile capabilities.
-- Reliable communication with authorized Bitey Web/Cloudflare APIs.
-- Mobile notifications and platform integrations where implemented.
-- Release builds through the repository's Expo/Android CI pipeline.
-
-## Data and security boundary
-
-The app is a client, not an AI brain. It must never contain provider API keys, private provider credentials or authoritative memory.
-
-```text
-Android client
-      ↓
-Supabase Auth identity
-      ↓
-authorized Bitey IA API
-      ↓
 Bitey Web / Cloudflare
-      ↓
-user-scoped persistence and AI services
+       ↑
+       │ authorized API
+       │
+Bitey IA App
+       ↓
+Supabase Auth / user identity
+       ↓
+user-scoped data
 ```
 
-Authorization is enforced server-side. Client-side identity information is not sufficient to authorize access to another user's data.
+The app is a client, not an AI brain. Provider keys, private credentials, authoritative memory and sensitive reasoning remain on the backend.
 
-## Bitey Trainer relationship
+## Core functionality
 
-`bitey-trainer` is an **internal capability of Bitey IA Web**, not a mobile feature and not a public destination in this app.
+- User registration/login/logout and session persistence.
+- New conversations and message history.
+- User profile and settings.
+- Projects/library interfaces when supported.
+- Files, images, microphone/voice and supported mobile capabilities.
+- Secure communication with authorized Bitey Web/Cloudflare APIs.
+- Mobile notifications/integrations where implemented.
+- Production Android APK builds through Expo/EAS and CI.
 
-Trainer is used for authorized AI evaluation/training opportunities, benchmarking and commercial programs with external AI providers. The Android app must not expose Trainer navigation, Trainer credentials or provider secrets.
+## Bitey Trainer
+
+**Bitey Trainer is a separate internal capability subordinate to Bitey IA.** It is intended for authorized AI training/evaluation, employment intelligence, opportunity analysis, benchmarking and human-in-the-loop programs.
+
+Trainer must not expose provider credentials or bypass provider/platform rules. Its validated capabilities can later be consumed by products such as JobIA through secure backend contracts.
 
 ## Relationship to BiteFixes
 
-BiteFixes is a separate product ecosystem. Bitey IA may integrate with BiteFixes through explicit authorized enterprise contracts, but BiteFixes-specific customers, tickets, services, company knowledge and workflows do not become general Bitey IA memory.
+BiteFixes is a separate enterprise ecosystem. Bitey IA can integrate with BiteFixes through explicit authorized contracts, but BiteFixes customers, tickets, services, company knowledge and workflows do not become general Bitey IA memory.
 
 ## Ecosystem
 
 | Repository | Product | Role |
 |---|---|---|
-| `bitey-web` | **Bitey IA Web** | General Bitey IA web application and Cloudflare supracerebro |
-| `bitey-ia-app` | **Bitey IA App** | This Android/mobile client |
-| `bitey-ai` | **Bitey IA Enterprise WordPress Plugin** | Authorized WordPress enterprise channel |
-| `bitey-trainer` | **Bitey Trainer** | Private internal training/evaluation capability subordinate to Bitey IA Web |
-| `bitefixes-backend` | **BiteFixes Backend** | Specialized BiteFixes enterprise intelligence/API |
-| `bitefixes-web` | **BiteFixes Web** | BiteFixes.com website/frontend |
-| `bitefixes-app` | **BiteFixes App** | BiteFixes mobile channel |
+| `bitey-web` | Bitey IA Web | General Bitey IA web application and supracerebro |
+| `bitey-ia-app` | Bitey IA App | This Android/mobile client |
+| `bitey-ai` | Bitey IA Enterprise WordPress Plugin | Authorized WordPress channel |
+| `bitey-trainer` | Bitey Trainer | Internal training/evaluation capability |
+| `JobIA` | JobIA | Employment/opportunity mobile product |
+| `bitefixes-backend` | BiteFixes Backend | Separate enterprise backend |
+| `bitefixes-web` | BiteFixes Web | BiteFixes.com web product |
+| `bitefixes-app` | BiteFixes App | Separate BiteFixes mobile channel |
 
-## Functional target
+## Android release target
 
-```text
-Open app
-  ↓
-Authenticate / restore session
-  ↓
-Bitey IA
-  ↓
-New conversation
-  ↓
-User message
-  ↓
-Bitey Web / supracerebro
-  ↓
-Bitey response
-  ↓
-User-scoped persistence
-  ↓
-History / Projects / Library
-```
+The immediate target is a **real Android APK that can be installed and tested on a physical Android device**, using the Bitey IA application icon and production configuration. The Web application is separate and is not required for the APK build.
 
-## Development and release validation
-
-The mobile stack remains based on Expo/React Native. Before release validate:
+Before release validate:
 
 ```text
 Android build → install → authentication → message → Bitey Web → response → persistence → logout/login
 ```
 
-The app must not regress the existing AI conversation path while authentication and user-scoped persistence are introduced.
-
 ## Product principle
 
-**Bitey Web is Bitey IA's supracerebro. Bitey IA App is the Android client. Bitey Trainer is an internal subordinate capability. BiteFixes App and BiteFixes Backend belong to a separate enterprise ecosystem.**
+**Bitey Web is Bitey IA's supracerebro. Bitey IA App is the Android client. Bitey Trainer is a subordinate internal capability. BiteFixes and JobIA remain separate products.**
